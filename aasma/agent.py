@@ -8,10 +8,12 @@ import numpy as np
 PREY_VIEW_RANGE = 3
 SEEKER_VIEW_RANGE = 2
 
+N_ACTIONS = 5
+DOWN, LEFT, UP, RIGHT, STAY = range(N_ACTIONS)
+OPPOSITE_ACTION = {DOWN: UP, LEFT: RIGHT, UP: DOWN, RIGHT: LEFT, STAY: STAY}
 
 class Agent(ABC):
-    def __init__(self, nActions: int, agentId: int, nSeekers: int, nPreys: int, is_prey: bool):
-        self.nActions = nActions
+    def __init__(self, agentId: int, nSeekers: int, nPreys: int, is_prey: bool):
         self.agentId = agentId
         self.nSeekers = nSeekers
         self.nPreys = nPreys
