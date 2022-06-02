@@ -60,8 +60,6 @@ class Agent(ABC):
         seekers_positions = observation[:self.nSeekers * 2]
         prey_positions = observation[self.nSeekers * 2:]
 
-        self.current_position = seekers_positions[self.agentId]
-
         if self.is_prey():
             team_positions = prey_positions
             enemy_positions = seekers_positions
@@ -70,6 +68,9 @@ class Agent(ABC):
             enemy_positions = prey_positions
 
         visible_enemy_positions = []
+        
+        #TODO Find another way to find current position
+        self.current_position = np.array((team_positions[self.agentId * 2], team_positions[(self.agentId * 2) + 1]))
 
         for i in range(len(enemy_positions)):
             # Filtering the enemy positions that this agent can see

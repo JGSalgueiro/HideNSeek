@@ -61,7 +61,7 @@ def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[
             next_observations, reward, terminals, info = environment.step(seekersActions, preysActions)
             environment.render()
             print(next_observations, reward, terminals, info);
-            sleep(3)
+            sleep(0.05)
             observations = next_observations
             
 
@@ -98,9 +98,9 @@ if __name__ == '__main__':
     agents = [Agent(0, environment.n_agents, environment.n_preys, False),
             Agent(1, environment.n_agents, environment.n_preys, False),
             Agent(2, environment.n_agents, environment.n_preys, False)]
-    preys = [Agent(3, environment.n_agents, environment.n_preys, True),
-            Agent(4, environment.n_agents, environment.n_preys, True),
-            Agent(5, environment.n_agents, environment.n_preys, True)]
+    preys = [Agent(0, environment.n_agents, environment.n_preys, True),
+            Agent(1, environment.n_agents, environment.n_preys, True),
+            Agent(2, environment.n_agents, environment.n_preys, True)]
 
     # 3 - Evaluate agent
     results = run_multi_agent(environment, agents, preys, opt.episodes)
