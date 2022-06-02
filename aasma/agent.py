@@ -60,8 +60,6 @@ class Agent(ABC):
         seekers_positions = observation[:self.nSeekers * 2]
         prey_positions = observation[self.nSeekers * 2:]
 
-        self.current_position = seekers_positions[self.agentId]
-
         if self.is_prey():
             team_positions = prey_positions
             enemy_positions = seekers_positions
@@ -79,6 +77,7 @@ class Agent(ABC):
         self.see(team_positions, np.array(visible_enemy_positions))
 
     def see(self, team_positions: np.ndarray, visible_enemy_positions: np.ndarray):
+        self.current_position = np.array((team_positions[self.agent_id * 2], team_positions[(self.agent_id * 2) + 1]))
         self.team_positions = team_positions
         self.visible_enemy_positions = visible_enemy_positions
 

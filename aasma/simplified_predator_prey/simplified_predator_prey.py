@@ -102,7 +102,7 @@ class SimplifiedPredatorPrey(gym.Env):
         self._prey_alive = [True for _ in range(self.n_preys)]
 
         self.get_agent_obs()
-        return [self.simplified_features() for _ in range(self.n_agents)]
+        return self.simplified_features()
 
     def step(self, agents_action, preys_action):
         self._step_count += 1
