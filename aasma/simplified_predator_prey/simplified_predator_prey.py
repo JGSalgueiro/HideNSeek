@@ -140,7 +140,7 @@ class SimplifiedPredatorPrey(gym.Env):
 
         self.get_agent_obs()
 
-        return [self.simplified_features() for _ in range(self.n_agents)], rewards, self._agent_dones, {'prey_alive': self._prey_alive}
+        return self.simplified_features(), rewards, self._agent_dones, {'prey_alive': self._prey_alive}
 
     def get_action_meanings(self, agent_i=None):
         if agent_i is not None:
