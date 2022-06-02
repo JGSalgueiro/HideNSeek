@@ -8,7 +8,7 @@ from typing import Sequence
 from aasma import Agent
 from aasma.utils import compare_results
 from aasma.simplified_predator_prey import SimplifiedPredatorPrey
-
+from aasma import greedyAgent
 
 def run_single_agent(environment: Env, agent: Agent, n_episodes: int) -> np.ndarray:
 
