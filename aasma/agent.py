@@ -1,11 +1,12 @@
 from abc import abstractmethod, ABC
+from copyreg import add_extension
 
 import pygame
 import random
 import numpy as np
 
-prey_view_range = 3
-seeker_view_range = 2
+PREY_VIEW_RANGE = 3
+SEEKER_VIEW_RANGE = 2
 
 N_ACTIONS = 5
 DOWN, LEFT, UP, RIGHT, STAY = range(N_ACTIONS)
@@ -14,15 +15,18 @@ def oppositeAction(action: int) -> int:
 
 
 class Agent(ABC):
-    def __init__(self, row, col, is_prey: bool, id):
+    def __init__(self, nActions: int, agentId: int, nSeekers: int, nPreys: int, is_prey: bool):
+        self.nActions = nActions
+        self.agentId = agentId
+        self.nSeekers = nSeekers
+        self.nPreys = nPreys
         self.team_positions = None
         self.visible_enemy_positions = None
-        self.current_position = np.array((row, col))
+        self.current_position = None
         self._is_prey = is_prey
         self.eliminated = False
         self.direction = None
-        self.view_range = prey_view_range if is_prey else seeker_view_range
-        self.id = id
+        self.view_range = PREY_VIEW_RANGE if is_prey else SEEKER_VIEW_RANGE
 
     def is_prey(self):
         return self._is_prey
@@ -48,10 +52,17 @@ class Agent(ABC):
 
         elif decision == 3:
             self.row = self.row - 1
+    
+    def action(self) -> int:
+        return np.random.randint(self.nActions)
 
-    def receive_status(self, prey_positions: np.ndarray, seekers_positions: np.ndarray):
+    def receive_status(self, observation: np.ndarray):
         """Receives the current status of the board and calls see() method with only what
         this agent can see"""
+        # TODO
+        prey_positions = observation
+        seekers_positions = observation
+        self.current_position = np.array((0,0))
         if self.is_prey():
             team_positions = prey_positions
             enemy_positions = seekers_positions
@@ -61,10 +72,11 @@ class Agent(ABC):
 
         visible_enemy_positions = []
 
-        for i in range(len(enemy_positions)):
-            # Filtering the enemy positions that this agent can see
-            if (np.abs(enemy_positions[i] - self.current_position) <= self.view_range).all():
-                visible_enemy_positions.append(enemy_positions[i])
+        # for i in range(len(enemy_positions)):
+        #     # Filtering the enemy positions that this agent can see
+        #     if (np.abs(enemy_positions[i] - self.current_position) <= self.view_range).all():
+        #         visible_enemy_positions.append(enemy_positions[i])
+        # TODO
 
         self.see(team_positions, np.array(visible_enemy_positions))
 
@@ -72,9 +84,9 @@ class Agent(ABC):
         self.team_positions = team_positions
         self.visible_enemy_positions = visible_enemy_positions
 
-    @abstractmethod
-    def action(self) -> int:
-        raise NotImplementedError()
+    # @abstractmethod
+    # def action(self) -> int:
+    #     raise NotImplementedError()
 
     def __repr__(self):
         return str("Prey" if self.is_prey() else "Seeker")

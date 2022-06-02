@@ -1,11 +1,12 @@
 import argparse
+from time import sleep
 
 import numpy as np
 from gym import Env
+from typing import Sequence
 
 from aasma import Agent
 from aasma.utils import compare_results
-from aasma.wrappers import SingleAgentWrapper
 from aasma.simplified_predator_prey import SimplifiedPredatorPrey
 
 
@@ -32,15 +33,52 @@ def run_single_agent(environment: Env, agent: Agent, n_episodes: int) -> np.ndar
 
     return results
 
+def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[Agent], n_episodes: int) -> np.ndarray:
 
-class RandomAgent(Agent):
-    n_actions = 0
-    def __init__(self, n_actions: int):
-        super(RandomAgent, self).__init__("Random Agent")
-        self.n_actions = n_actions
+    results = np.zeros(n_episodes)
 
-    def action(self) -> int:
-        return np.random.randint(self.n_actions)
+    for episode in range(n_episodes):
+
+        steps = 0
+        terminals = [False for _ in range(len(seekers))]
+        observations = environment.reset()
+        seekersActions = []
+        preysActions = []
+        environment.render()
+
+        while not all(terminals):
+            steps += 1
+            seekersActions.clear()
+            preysActions.clear()
+            for i in range(len(seekers)):
+                seekers[i].receive_status(observations)
+                seekersActions.append(seekers[i].action())
+
+            for i in range(len(preys)):
+                preys[i].receive_status(observations)
+                preysActions.append(preys[i].action())
+            
+            next_observations, reward, terminals, info = environment.step(seekersActions, preysActions)
+            environment.render()
+            print(next_observations, reward, terminals, info);
+            sleep(3)
+            observations = next_observations
+            
+
+        results[episode] = steps
+
+        environment.close()
+
+    return results
+
+# class RandomAgent(Agent):
+#     n_actions = 0
+#     def __init__(self, n_actions: int):
+#         super(RandomAgent, self).__init__("Random Agent")
+#         self.n_actions = n_actions
+
+#     def action(self) -> int:
+#         return np.random.randint(self.n_actions)
 
 
 if __name__ == '__main__':
@@ -51,20 +89,22 @@ if __name__ == '__main__':
 
     # 1 - Setup environment
     environment = SimplifiedPredatorPrey(
-        grid_shape=(7, 7),
-        n_agents=1, n_preys=1,
+        grid_shape=(20, 20),
+        n_agents=3, n_preys=3,
         max_steps=100, required_captors=1
     )
-    environment = SingleAgentWrapper(environment, agent_id=0)
 
     # 2 - Setup agent
-    agent = RandomAgent(environment.action_space.n)
+    agents = [Agent(environment.action_space[0].n, 0, environment.n_agents, environment.n_preys, False),
+            Agent(environment.action_space[0].n, 1, environment.n_agents, environment.n_preys, False),
+            Agent(environment.action_space[0].n, 2, environment.n_agents, environment.n_preys, False)]
+    preys = [Agent(environment.action_space[1].n, 3, environment.n_agents, environment.n_preys, True),
+            Agent(environment.action_space[0].n, 4, environment.n_agents, environment.n_preys, True),
+            Agent(environment.action_space[0].n, 5, environment.n_agents, environment.n_preys, True)]
 
     # 3 - Evaluate agent
-    results = {
-        agent.name: run_single_agent(environment, agent, opt.episodes)
-    }
+    results = run_multi_agent(environment, agents, preys, opt.episodes)
 
     # 4 - Compare results
-    compare_results(results, title="Random Agent on 'Predator Prey' Environment", colors=["orange"])
+    #compare_results(results, title="Random Agent on 'Predator Prey' Environment", colors=["orange"])
 
