@@ -89,14 +89,18 @@ if __name__ == '__main__':
 
     # 1 - Setup environment
     environment = SimplifiedPredatorPrey(
-        grid_shape=(7, 7),
-        n_agents=1, n_preys=1,
+        grid_shape=(20, 20),
+        n_agents=3, n_preys=3,
         max_steps=100, required_captors=1
     )
 
     # 2 - Setup agent
-    agents = [Agent(environment.action_space[0].n, 0, environment.n_agents, environment.n_preys, False)]
-    preys = [Agent(environment.action_space[1].n, 1, environment.n_agents, environment.n_preys, True)]
+    agents = [Agent(environment.action_space[0].n, 0, environment.n_agents, environment.n_preys, False),
+            Agent(environment.action_space[0].n, 1, environment.n_agents, environment.n_preys, False),
+            Agent(environment.action_space[0].n, 2, environment.n_agents, environment.n_preys, False)]
+    preys = [Agent(environment.action_space[1].n, 3, environment.n_agents, environment.n_preys, True),
+            Agent(environment.action_space[0].n, 4, environment.n_agents, environment.n_preys, True),
+            Agent(environment.action_space[0].n, 5, environment.n_agents, environment.n_preys, True)]
 
     # 3 - Evaluate agent
     results = run_multi_agent(environment, agents, preys, opt.episodes)
