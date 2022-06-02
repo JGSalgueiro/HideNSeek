@@ -4,6 +4,8 @@ import random
 
 import numpy as np
 
+from aasma.agent import Agent
+
 logger = logging.getLogger(__name__)
 
 from PIL import ImageColor

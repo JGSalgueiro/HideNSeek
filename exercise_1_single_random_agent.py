@@ -61,7 +61,7 @@ def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[
             next_observations, reward, terminals, info = environment.step(seekersActions, preysActions)
             environment.render()
             print(next_observations, reward, terminals, info);
-            sleep(3)
+            sleep(0.05)
             observations = next_observations
             
 

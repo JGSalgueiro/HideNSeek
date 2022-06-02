@@ -68,6 +68,8 @@ class Agent(ABC):
             enemy_positions = prey_positions
 
         visible_enemy_positions = []
+        
+        self.current_position = np.array((team_positions[self.agentId * 2], team_positions[(self.agentId * 2) + 1]))
 
         for i in range(len(enemy_positions)):
             # Filtering the enemy positions that this agent can see
@@ -77,7 +79,6 @@ class Agent(ABC):
         self.see(team_positions, np.array(visible_enemy_positions))
 
     def see(self, team_positions: np.ndarray, visible_enemy_positions: np.ndarray):
-        self.current_position = np.array((team_positions[self.agent_id * 2], team_positions[(self.agent_id * 2) + 1]))
         self.team_positions = team_positions
         self.visible_enemy_positions = visible_enemy_positions
 
