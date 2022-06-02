@@ -69,6 +69,7 @@ class Agent(ABC):
 
         visible_enemy_positions = []
         
+        #TODO Find another way to find current position
         self.current_position = np.array((team_positions[self.agentId * 2], team_positions[(self.agentId * 2) + 1]))
 
         for i in range(len(enemy_positions)):
