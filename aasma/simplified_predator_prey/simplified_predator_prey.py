@@ -41,7 +41,7 @@ class SimplifiedPredatorPrey(gym.Env):
         self._agent_view_mask = (5, 5)
         self._required_captors = required_captors
 
-        self.action_space = MultiAgentActionSpace([spaces.Discrete(5) for _ in range(self.n_agents)])
+        self.action_space = MultiAgentActionSpace([spaces.Discrete(5) for _ in range(self.n_agents+self.n_preys)])
         self.agent_pos = {_: None for _ in range(self.n_agents)}
         self.prey_pos = {_: None for _ in range(self.n_preys)}
         self._prey_alive = None
@@ -104,7 +104,7 @@ class SimplifiedPredatorPrey(gym.Env):
         self.get_agent_obs()
         return [self.simplified_features() for _ in range(self.n_agents)]
 
-    def step(self, agents_action):
+    def step(self, agents_action, preys_action):
         self._step_count += 1
         rewards = [self._step_cost for _ in range(self.n_agents)]
 
@@ -112,7 +112,7 @@ class SimplifiedPredatorPrey(gym.Env):
             if not (self._agent_dones[agent_i]):
                 self.__update_agent_pos(agent_i, action)
 
-        for prey_i in range(self.n_preys):
+        for prey_i, action in enumerate(preys_action):
             if self._prey_alive[prey_i]:
                 predator_neighbour_count, n_i = self._neighbour_agents(self.prey_pos[prey_i])
 
@@ -125,11 +125,11 @@ class SimplifiedPredatorPrey(gym.Env):
                     for agent_i in range(self.n_agents):
                         rewards[agent_i] += _reward
 
-                prey_move = None
-                if self._prey_alive[prey_i]:
-                    prey_move = random.randrange(5)
+                # prey_move = None
+                # if self._prey_alive[prey_i]:
+                #     prey_move = random.randrange(5)
 
-                self.__update_prey_pos(prey_i, prey_move)
+                self.__update_prey_pos(prey_i, action)
 
         if (self._step_count >= self._max_steps) or (True not in self._prey_alive):
             for i in range(self.n_agents):
