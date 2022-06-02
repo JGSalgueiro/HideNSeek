@@ -4,6 +4,7 @@ import math
 from scipy.spatial.distance import cityblock
 import random
 
+
 def _close_horizontally(distances):
     if distances[0] > 0:
         return agent.RIGHT
@@ -59,8 +60,15 @@ def closest_prey(agent_position, prey_positions):
 class GreedyAgent(agent.Agent):
     def action(self) -> int:
         if len(self.visible_enemy_positions) == 0:
-            # There are no visible prey. Move randomly
+            # There are no visible enemies. Move randomly
             return np.random.randint(agent.N_ACTIONS)
         else:
-            # There's at least 1 visible prey
-            return direction_to_go(self.current_position, closest_prey(self.current_position, self.visible_enemy_positions))
+            # There's at least 1 visible enemy
+            direction = direction_to_go(self.current_position,
+                                        closest_prey(self.current_position, self.visible_enemy_positions))
+            if self.is_prey():
+                # Preys move away from the enemies
+                return agent.OPPOSITE_ACTION[direction]
+            else:
+                # Predators move towards the enemies
+                return direction
