@@ -70,5 +70,5 @@ class GreedyAgent(agent.Agent):
                 # Preys move away from the enemies
                 return agent.OPPOSITE_ACTION[direction]
             else:
-                # Predators move towards the enemies
+                # Seekers move towards the enemies
                 return direction

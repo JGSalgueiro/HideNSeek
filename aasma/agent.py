@@ -56,10 +56,12 @@ class Agent(ABC):
     def receive_status(self, observation: np.ndarray):
         """Receives the current status of the board and calls see() method with only what
         this agent can see"""
-        # TODO
-        prey_positions = observation
-        seekers_positions = observation
-        self.current_position = np.array((0,0))
+
+        seekers_positions = observation[:self.nSeekers * 2]
+        prey_positions = observation[self.nSeekers * 2:]
+
+        self.current_position = seekers_positions[self.agentId]
+
         if self.is_prey():
             team_positions = prey_positions
             enemy_positions = seekers_positions
@@ -69,11 +71,10 @@ class Agent(ABC):
 
         visible_enemy_positions = []
 
-        # for i in range(len(enemy_positions)):
-        #     # Filtering the enemy positions that this agent can see
-        #     if (np.abs(enemy_positions[i] - self.current_position) <= self.view_range).all():
-        #         visible_enemy_positions.append(enemy_positions[i])
-        # TODO
+        for i in range(len(enemy_positions)):
+            # Filtering the enemy positions that this agent can see
+            if (np.abs(enemy_positions[i] - self.current_position) <= self.view_range).all():
+                visible_enemy_positions.append(enemy_positions[i])
 
         self.see(team_positions, np.array(visible_enemy_positions))
 
