@@ -95,12 +95,12 @@ if __name__ == '__main__':
     )
 
     # 2 - Setup agent
-    agents = [Agent(environment.action_space[0].n, 0, environment.n_agents, environment.n_preys, False),
-            Agent(environment.action_space[0].n, 1, environment.n_agents, environment.n_preys, False),
-            Agent(environment.action_space[0].n, 2, environment.n_agents, environment.n_preys, False)]
-    preys = [Agent(environment.action_space[1].n, 3, environment.n_agents, environment.n_preys, True),
-            Agent(environment.action_space[0].n, 4, environment.n_agents, environment.n_preys, True),
-            Agent(environment.action_space[0].n, 5, environment.n_agents, environment.n_preys, True)]
+    agents = [Agent(0, environment.n_agents, environment.n_preys, False),
+            Agent(1, environment.n_agents, environment.n_preys, False),
+            Agent(2, environment.n_agents, environment.n_preys, False)]
+    preys = [Agent(3, environment.n_agents, environment.n_preys, True),
+            Agent(4, environment.n_agents, environment.n_preys, True),
+            Agent(5, environment.n_agents, environment.n_preys, True)]
 
     # 3 - Evaluate agent
     results = run_multi_agent(environment, agents, preys, opt.episodes)

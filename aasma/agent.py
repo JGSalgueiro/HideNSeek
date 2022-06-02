@@ -51,7 +51,7 @@ class Agent(ABC):
             self.row = self.row - 1
     
     def action(self) -> int:
-        return np.random.randint(self.nActions)
+        return np.random.randint(N_ACTIONS)
 
     def receive_status(self, observation: np.ndarray):
         """Receives the current status of the board and calls see() method with only what
