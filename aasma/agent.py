@@ -7,9 +7,14 @@ import numpy as np
 prey_view_range = 3
 seeker_view_range = 2
 
+N_ACTIONS = 5
+DOWN, LEFT, UP, RIGHT, STAY = range(N_ACTIONS)
+
+def oppositeAction(action: int) -> int:
+
 
 class Agent(ABC):
-    def __init__(self, row, col, is_prey: bool):
+    def __init__(self, row, col, is_prey: bool, id):
         self.team_positions = None
         self.visible_enemy_positions = None
         self.current_position = np.array((row, col))
@@ -17,6 +22,7 @@ class Agent(ABC):
         self.eliminated = False
         self.direction = None
         self.view_range = prey_view_range if is_prey else seeker_view_range
+        self.id = id
 
     def is_prey(self):
         return self._is_prey
