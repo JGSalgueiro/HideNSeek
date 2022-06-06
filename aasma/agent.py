@@ -63,7 +63,6 @@ class Agent(ABC):
         this agent can see"""
 
         if self.current_position[0] == -1 and self.current_position[1] == -1:
-            print("Im dead sir")
             return;
 
         seekers_positions = observation[:self.nSeekers * 2]
@@ -79,7 +78,6 @@ class Agent(ABC):
         visible_enemy_positions = []
         
         self.current_position = np.array((team_positions[self.agentId * 2], team_positions[(self.agentId * 2) + 1]))
-        print("my_position:", self.current_position, " my_view_range: ", self.view_range)
 
         for x,y in self.zipPairs(enemy_positions):
             # Filtering the enemy positions that this agent can see
