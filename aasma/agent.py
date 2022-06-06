@@ -62,7 +62,7 @@ class Agent(ABC):
         """Receives the current status of the board and calls see() method with only what
         this agent can see"""
 
-        if self.current_position[0] == -1 and self.current_position[1] == -1:
+        if self.current_position[0] == -100 and self.current_position[1] == -100:
             return;
 
         seekers_positions = observation[:self.nSeekers * 2]
