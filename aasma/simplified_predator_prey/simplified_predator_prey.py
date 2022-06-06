@@ -88,6 +88,11 @@ class SimplifiedPredatorPrey(gym.Env):
                 row = row[0]
                 col = col[0]
                 prey_pos.append((col, row))
+            else: #if the prey is dead just returns -1|-1
+                tag = f"P{prey_id + 1}"
+                row = -1
+                col = -1
+                prey_pos.append((col, row))
 
         features = np.array(agent_pos + prey_pos).reshape(-1)
 

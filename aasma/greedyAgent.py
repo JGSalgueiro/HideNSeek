@@ -1,4 +1,4 @@
-import agent
+import aasma.agent as agent
 import numpy as np
 import math
 from scipy.spatial.distance import cityblock
@@ -28,6 +28,7 @@ def direction_to_go(agent_position, prey_position):
     Given the position of the agent and the position of a prey,
     returns the action to take in order to close the distance
     """
+    print("prey_position: ", prey_position, " agent_position: ", agent_position)
     distances = np.array(prey_position) - np.array(agent_position)
     abs_distances = np.absolute(distances)
     if abs_distances[0] > abs_distances[1]:
@@ -64,8 +65,9 @@ class GreedyAgent(agent.Agent):
             return np.random.randint(agent.N_ACTIONS)
         else:
             # There's at least 1 visible enemy
-            direction = direction_to_go(self.current_position,
-                                        closest_prey(self.current_position, self.visible_enemy_positions))
+            closestPreyPosition =  closest_prey(self.current_position, self.visible_enemy_positions)
+            print(self.visible_enemy_positions, closestPreyPosition)
+            direction = direction_to_go(self.current_position, closestPreyPosition)
             if self.is_prey():
                 # Preys move away from the enemies
                 return agent.OPPOSITE_ACTION[direction]

@@ -19,7 +19,7 @@ class Agent(ABC):
         self.nPreys = nPreys
         self.team_positions = None
         self.visible_enemy_positions = None
-        self.current_position = None
+        self.current_position = np.array((0,0))
         self._is_prey = is_prey
         self.eliminated = False
         self.direction = None
@@ -53,9 +53,18 @@ class Agent(ABC):
     def action(self) -> int:
         return np.random.randint(N_ACTIONS)
 
+    def zipPairs(self, iterable):
+        "s -> (s0, s1), (s2, s3), (s4, s5), ..."
+        a = iter(iterable)
+        return zip(a, a)
+
     def receive_status(self, observation: np.ndarray):
         """Receives the current status of the board and calls see() method with only what
         this agent can see"""
+
+        if self.current_position[0] == -1 and self.current_position[1] == -1:
+            print("Im dead sir")
+            return;
 
         seekers_positions = observation[:self.nSeekers * 2]
         prey_positions = observation[self.nSeekers * 2:]
@@ -69,13 +78,14 @@ class Agent(ABC):
 
         visible_enemy_positions = []
         
-        #TODO Find another way to find current position
         self.current_position = np.array((team_positions[self.agentId * 2], team_positions[(self.agentId * 2) + 1]))
+        print("my_position:", self.current_position, " my_view_range: ", self.view_range)
 
-        for i in range(len(enemy_positions)):
+        for x,y in self.zipPairs(enemy_positions):
             # Filtering the enemy positions that this agent can see
-            if (np.abs(enemy_positions[i] - self.current_position) <= self.view_range).all():
-                visible_enemy_positions.append(enemy_positions[i])
+            if (np.abs(x - self.current_position[0]) <= self.view_range) and (np.abs(y - self.current_position[1]) <= self.view_range):
+                visible_enemy_positions.append(x)
+                visible_enemy_positions.append(y)
 
         self.see(team_positions, np.array(visible_enemy_positions))
 
@@ -89,3 +99,4 @@ class Agent(ABC):
 
     def __repr__(self):
         return str("Prey" if self.is_prey() else "Seeker")
+    

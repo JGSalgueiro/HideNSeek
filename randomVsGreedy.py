@@ -4,7 +4,7 @@ from aasma.simplified_predator_prey import SimplifiedPredatorPrey
 
 from aasma import GreedyAgent
 from aasma import Agent
-from exercise_1_single_random_agent import run_multi_agent
+from randomVsRandom import run_multi_agent
 
 class MyTestCase(unittest.TestCase):
     def test_GreedySeekerVsRandomPrey(self):
@@ -19,9 +19,9 @@ class MyTestCase(unittest.TestCase):
         seekers = [GreedyAgent(0, environment.n_agents, environment.n_preys, False),
                    GreedyAgent(1, environment.n_agents, environment.n_preys, False),
                    GreedyAgent(2, environment.n_agents, environment.n_preys, False)]
-        preys = [Agent(3, environment.n_agents, environment.n_preys, True),
-                 Agent(4, environment.n_agents, environment.n_preys, True),
-                 Agent(5, environment.n_agents, environment.n_preys, True)]
+        preys = [Agent(0, environment.n_agents, environment.n_preys, True),
+                 Agent(1, environment.n_agents, environment.n_preys, True),
+                 Agent(2, environment.n_agents, environment.n_preys, True)]
 
         # 3 - Evaluate agent
         results = run_multi_agent(environment, seekers, preys, 10)
