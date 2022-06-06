@@ -10,6 +10,8 @@ from aasma.utils import compare_results
 from aasma.simplified_predator_prey import SimplifiedPredatorPrey
 from aasma import greedyAgent
 
+from collections.abc import Callable
+
 def run_single_agent(environment: Env, agent: Agent, n_episodes: int) -> np.ndarray:
 
     results = np.zeros(n_episodes)
@@ -33,8 +35,19 @@ def run_single_agent(environment: Env, agent: Agent, n_episodes: int) -> np.ndar
 
     return results
 
-def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[Agent], n_episodes: int) -> np.ndarray:
-
+def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[Agent], n_episodes: int,
+                    render_when: Callable[[int, int], bool] = lambda episode, step: True,
+                    seconds_per_rendered_frame: float = 0.05) -> np.ndarray:
+    """
+    Runs a multi agent system.
+    environment -> the environment to run on
+    seekers -> a list containing agents that will act as seekers
+    preys -> a list containing agents that will act as prey
+    n_episodes -> how many episodes should run in the given environment with the given agents
+    render_when -> function that receives the number of the current episode and current step taking place and returns
+        whether the game should be rendered
+    seconds_per_rendered_frame -> amount of seconds per frame that gets rendered
+    """
     results = np.zeros(n_episodes)
 
     for episode in range(n_episodes):
@@ -44,7 +57,9 @@ def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[
         observations = environment.reset()
         seekersActions = []
         preysActions = []
-        environment.render()
+
+        if render_when(episode, steps):
+            environment.render()
 
         while not all(terminals):
             steps += 1
@@ -59,9 +74,12 @@ def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[
                 preysActions.append(preys[i].action())
             
             next_observations, reward, terminals, info = environment.step(seekersActions, preysActions)
-            environment.render()
-            print(next_observations, reward, terminals, info);
-            sleep(0.05)
+
+            if render_when(episode, steps):
+                environment.render()
+                print(episode, steps, next_observations, reward, terminals, info);
+                sleep(seconds_per_rendered_frame)
+
             observations = next_observations
             
 
