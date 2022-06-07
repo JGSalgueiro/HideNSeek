@@ -37,7 +37,7 @@ def run_single_agent(environment: Env, agent: Agent, n_episodes: int) -> np.ndar
 
 def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[Agent], n_episodes: int,
                     render_when: Callable[[int, int], bool] = lambda episode, step: True,
-                    seconds_per_rendered_frame: float = 0.05) -> np.ndarray:
+                    seconds_per_rendered_frame: float = 0.05) -> tuple[np.ndarray, np.ndarray]:
     """
     Runs a multi agent system.
     environment -> the environment to run on
