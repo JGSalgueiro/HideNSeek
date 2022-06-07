@@ -7,7 +7,7 @@ from typing import Sequence
 
 from aasma import Agent
 from aasma.utils import compare_results
-from aasma.simplified_predator_prey import SimplifiedPredatorPrey
+from aasma.simplified_predator_prey import SimplifiedPredatorPrey, ACTION_MEANING
 from aasma import greedyAgent
 
 from collections.abc import Callable
@@ -78,7 +78,9 @@ def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[
 
             if render_when(episode, steps):
                 environment.render()
-                print(episode, steps, next_observations, reward, terminals, info);
+                print(f'Epi: {episode}, Step: {steps}, Obs: {next_observations}, Reward: {reward}, Terminals: {terminals}, Info: {info}'
+                      f'Seeker actions: {[ACTION_MEANING[a] for a in seekersActions]}, '
+                      f'Prey actions: {[ACTION_MEANING[a] for a in preysActions]}')
                 sleep(seconds_per_rendered_frame)
 
             observations = next_observations
@@ -114,12 +116,12 @@ if __name__ == '__main__':
     )
 
     # 2 - Setup agent
-    agents = [Agent(0, environment.n_agents, environment.n_preys, False),
-            Agent(1, environment.n_agents, environment.n_preys, False),
-            Agent(2, environment.n_agents, environment.n_preys, False)]
-    preys = [Agent(0, environment.n_agents, environment.n_preys, True),
-            Agent(1, environment.n_agents, environment.n_preys, True),
-            Agent(2, environment.n_agents, environment.n_preys, True)]
+    agents = [Agent(0, environment.n_agents, environment.n_preys, False, environment),
+            Agent(1, environment.n_agents, environment.n_preys, False, environment),
+            Agent(2, environment.n_agents, environment.n_preys, False, environment)]
+    preys = [Agent(0, environment.n_agents, environment.n_preys, True, environment),
+            Agent(1, environment.n_agents, environment.n_preys, True, environment),
+            Agent(2, environment.n_agents, environment.n_preys, True, environment)]
 
     # 3 - Evaluate agent
     results = run_multi_agent(environment, agents, preys, opt.episodes)

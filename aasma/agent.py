@@ -1,8 +1,6 @@
-from abc import abstractmethod, ABC
-from copyreg import add_extension
-
-import pygame
 import random
+from abc import ABC
+
 import numpy as np
 
 PREY_VIEW_RANGE = 3
@@ -11,19 +9,23 @@ SEEKER_VIEW_RANGE = 2
 N_ACTIONS = 5
 DOWN, LEFT, UP, RIGHT, STAY = range(N_ACTIONS)
 OPPOSITE_ACTION = {DOWN: UP, LEFT: RIGHT, UP: DOWN, RIGHT: LEFT, STAY: STAY}
+# Needed for Greedy Agent calculations
+ACTION_MOVEMENTS = {DOWN: np.array((0, 1)), LEFT: np.array((-1, 0)),
+                    UP: np.array((0, -1)), RIGHT: np.array((1, 0)), STAY: np.array((0, 0))}
 
 class Agent(ABC):
-    def __init__(self, agentId: int, nSeekers: int, nPreys: int, is_prey: bool):
+    def __init__(self, agentId: int, nSeekers: int, nPreys: int, is_prey: bool, environment):
         self.agentId = agentId
         self.nSeekers = nSeekers
         self.nPreys = nPreys
         self.team_positions = None
         self.visible_enemy_positions = None
-        self.current_position = np.array((0,0))
+        self.current_position = np.array((0, 0))
         self._is_prey = is_prey
         self.eliminated = False
         self.direction = None
         self.view_range = PREY_VIEW_RANGE if is_prey else SEEKER_VIEW_RANGE
+        self.environment = environment
 
     def is_prey(self):
         return self._is_prey
@@ -62,9 +64,6 @@ class Agent(ABC):
         """Receives the current status of the board and calls see() method with only what
         this agent can see"""
 
-        if self.current_position[0] == -100 and self.current_position[1] == -100:
-            return;
-
         seekers_positions = observation[:self.nSeekers * 2]
         prey_positions = observation[self.nSeekers * 2:]
 
@@ -76,8 +75,11 @@ class Agent(ABC):
             enemy_positions = prey_positions
 
         visible_enemy_positions = []
-        
+
         self.current_position = np.array((team_positions[self.agentId * 2], team_positions[(self.agentId * 2) + 1]))
+
+        if self.current_position[0] == -100 and self.current_position[1] == -100:
+            return
 
         for x,y in self.zipPairs(enemy_positions):
             # Filtering the enemy positions that this agent can see

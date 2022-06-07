@@ -1,10 +1,9 @@
 import copy
 import logging
-import random
 
 import numpy as np
 
-from aasma.agent import PREY_VIEW_RANGE, SEEKER_VIEW_RANGE, Agent
+from aasma.agent import PREY_VIEW_RANGE, SEEKER_VIEW_RANGE
 
 logger = logging.getLogger(__name__)
 
@@ -386,6 +385,10 @@ class SimplifiedPredatorPrey(gym.Env):
         if self.viewer is not None:
             self.viewer.close()
             self.viewer = None
+
+    @property
+    def grid_shape(self):
+        return self._grid_shape
 
 
 AGENT_COLOR = ImageColor.getcolor('blue', mode='RGB')

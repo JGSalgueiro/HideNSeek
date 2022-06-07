@@ -18,8 +18,8 @@ class MyTestCase(unittest.TestCase):
         )
 
         # 2 - Setup agent
-        seekers = [GreedyAgent(i, environment.n_agents, environment.n_preys, False) for i in range(n_agents)]
-        preys = [Agent(i, environment.n_agents, environment.n_preys, True) for i in range(n_agents)]
+        seekers = [GreedyAgent(i, environment.n_agents, environment.n_preys, False, environment) for i in range(n_agents)]
+        preys = [Agent(i, environment.n_agents, environment.n_preys, True, environment) for i in range(n_agents)]
 
         # 3 - Evaluate agent
         print(run_multi_agent(environment, seekers, preys, 20, lambda epi, step: epi % 5 == 0, 0.1))
@@ -36,8 +36,8 @@ class MyTestCase(unittest.TestCase):
         )
 
         # 2 - Setup agent
-        seekers = [Agent(i, environment.n_agents, environment.n_preys, False) for i in range(n_agents)]
-        preys = [GreedyAgent(i, environment.n_agents, environment.n_preys, True) for i in range(n_agents)]
+        seekers = [Agent(i, environment.n_agents, environment.n_preys, False, environment) for i in range(n_agents)]
+        preys = [GreedyAgent(i, environment.n_agents, environment.n_preys, True, environment) for i in range(n_agents)]
 
         # 3 - Evaluate agent
         print(run_multi_agent(environment, seekers, preys, 20, lambda epi, step: epi % 5 == 0, 0.1))
@@ -54,8 +54,8 @@ class MyTestCase(unittest.TestCase):
         )
 
         # 2 - Setup agent
-        seekers = [GreedyAgent(i, environment.n_agents, environment.n_preys, False) for i in range(n_agents)]
-        preys = [GreedyAgent(i, environment.n_agents, environment.n_preys, True) for i in range(n_agents)]
+        seekers = [GreedyAgent(i, environment.n_agents, environment.n_preys, False, environment) for i in range(n_agents)]
+        preys = [GreedyAgent(i, environment.n_agents, environment.n_preys, True, environment) for i in range(n_agents)]
 
         # 3 - Evaluate agent
         print(run_multi_agent(environment, seekers, preys, 20, lambda epi, step: epi % 5 == 0, 0.1))
