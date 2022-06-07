@@ -22,9 +22,8 @@ class MyTestCase(unittest.TestCase):
         preys = [Agent(i, environment.n_agents, environment.n_preys, True) for i in range(n_agents)]
 
         # 3 - Evaluate agent
-        results = run_multi_agent(environment, seekers, preys, 20, lambda epi, step: epi % 5 == 0, 0.1)
+        print(run_multi_agent(environment, seekers, preys, 20, lambda epi, step: epi % 5 == 0, 0.1))
 
-        print(results)
 
     def test_RandomSeekerVsGreedyPrey(self):
         n_agents = 5
@@ -41,9 +40,8 @@ class MyTestCase(unittest.TestCase):
         preys = [GreedyAgent(i, environment.n_agents, environment.n_preys, True) for i in range(n_agents)]
 
         # 3 - Evaluate agent
-        results = run_multi_agent(environment, seekers, preys, 20, lambda epi, step: epi % 5 == 0, 0.1)
+        print(run_multi_agent(environment, seekers, preys, 20, lambda epi, step: epi % 5 == 0, 0.1))
 
-        print(results)
 
     def test_GreedySeekerVsGreedyPrey(self):
         n_agents = 5
@@ -60,9 +58,8 @@ class MyTestCase(unittest.TestCase):
         preys = [GreedyAgent(i, environment.n_agents, environment.n_preys, True) for i in range(n_agents)]
 
         # 3 - Evaluate agent
-        results = run_multi_agent(environment, seekers, preys, 20, lambda epi, step: epi % 5 == 0, 0.1)
+        print(run_multi_agent(environment, seekers, preys, 20, lambda epi, step: epi % 5 == 0, 0.1))
 
-        print(results)
 
 if __name__ == '__main__':
     unittest.main()

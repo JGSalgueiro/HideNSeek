@@ -48,7 +48,8 @@ def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[
         whether the game should be rendered
     seconds_per_rendered_frame -> amount of seconds per frame that gets rendered
     """
-    results = np.zeros(n_episodes)
+    nRounds = np.zeros(n_episodes)
+    nPreysAlive = np.zeros(n_episodes)
 
     for episode in range(n_episodes):
 
@@ -81,13 +82,13 @@ def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[
                 sleep(seconds_per_rendered_frame)
 
             observations = next_observations
-            
-
-        results[episode] = steps
+        
+        nRounds[episode] = steps
+        nPreysAlive[episode] = np.count_nonzero(info["prey_alive"])
 
         environment.close()
 
-    return results
+    return nRounds, nPreysAlive
 
 # class RandomAgent(Agent):
 #     n_actions = 0

@@ -4,7 +4,7 @@ import random
 
 import numpy as np
 
-from aasma.agent import Agent
+from aasma.agent import PREY_VIEW_RANGE, SEEKER_VIEW_RANGE, Agent
 
 logger = logging.getLogger(__name__)
 
@@ -322,19 +322,46 @@ class SimplifiedPredatorPrey(gym.Env):
         if self.is_valid([pos[0], pos[1] - 1]):
             neighbours.append([pos[0], pos[1] - 1])
         return neighbours
+    
+    def __get_visionspace_coordinates(self, pos, r):
+        visionspace = []
+        for x in range(r+1):
+            for y in range(r+1):
+                visionspace.append([pos[0] + x, pos[1] + y])
+        for x in range(r+1):
+            for y in range(r+1):
+                visionspace.append([pos[0] + x, pos[1] - y])
+        for x in range(r+1):
+            for y in range(r+1):
+                visionspace.append([pos[0] - x, pos[1] + y])
+        for x in range(r+1):
+            for y in range(r+1):
+                visionspace.append([pos[0] - x, pos[1] - y])
+        return visionspace
 
     def render(self, mode='human'):
         img = copy.copy(self._base_img)
+
+        for prey_i in range(self.n_preys):
+                    if self._prey_alive[prey_i]:
+                        for visionspace in self.__get_visionspace_coordinates(self.prey_pos[prey_i], PREY_VIEW_RANGE):
+                            fill_cell(img, visionspace, cell_size=CELL_SIZE, fill=PREY_VISIONSPACE_COLOR, margin=0.1)
+                            
+        for agent_i in range(self.n_agents):
+            for visionspace in self.__get_visionspace_coordinates(self.agent_pos[agent_i], SEEKER_VIEW_RANGE):
+                fill_cell(img, visionspace, cell_size=CELL_SIZE, fill=AGENT_VISIONSPACE_COLOR, margin=0.1)
+
         for agent_i in range(self.n_agents):
             for neighbour in self.__get_neighbour_coordinates(self.agent_pos[agent_i]):
                 fill_cell(img, neighbour, cell_size=CELL_SIZE, fill=AGENT_NEIGHBORHOOD_COLOR, margin=0.1)
             fill_cell(img, self.agent_pos[agent_i], cell_size=CELL_SIZE, fill=AGENT_NEIGHBORHOOD_COLOR, margin=0.1)
 
+
         for agent_i in range(self.n_agents):
             draw_circle(img, self.agent_pos[agent_i], cell_size=CELL_SIZE, fill=AGENT_COLOR)
             write_cell_text(img, text=str(agent_i + 1), pos=self.agent_pos[agent_i], cell_size=CELL_SIZE,
                             fill='white', margin=0.4)
-
+        
         for prey_i in range(self.n_preys):
             if self._prey_alive[prey_i]:
                 draw_circle(img, self.prey_pos[prey_i], cell_size=CELL_SIZE, fill=PREY_COLOR)
@@ -363,6 +390,8 @@ class SimplifiedPredatorPrey(gym.Env):
 
 AGENT_COLOR = ImageColor.getcolor('blue', mode='RGB')
 AGENT_NEIGHBORHOOD_COLOR = (186, 238, 247)
+AGENT_VISIONSPACE_COLOR = (255, 255, 0)
+PREY_VISIONSPACE_COLOR = (174, 243, 89)
 PREY_COLOR = 'red'
 
 CELL_SIZE = 35

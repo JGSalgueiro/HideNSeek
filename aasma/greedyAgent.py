@@ -40,7 +40,7 @@ def direction_to_go(agent_position, prey_position):
         return _close_horizontally(distances) if roll > 0.5 else _close_vertically(distances)
 
 
-def closest_prey(agent_position, prey_positions):
+def closest_enemy(agent_position, prey_positions):
     """
     Given the positions of an agent and a sequence of positions of all prey,
     returns the positions of the closest prey.
@@ -65,7 +65,7 @@ class GreedyAgent(agent.Agent):
             return np.random.randint(agent.N_ACTIONS)
         else:
             # There's at least 1 visible enemy
-            closestPreyPosition =  closest_prey(self.current_position, self.visible_enemy_positions)
+            closestPreyPosition = closest_enemy(self.current_position, self.visible_enemy_positions)
             direction = direction_to_go(self.current_position, closestPreyPosition)
             if self.is_prey():
                 # Preys move away from the enemies
