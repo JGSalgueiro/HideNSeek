@@ -15,7 +15,7 @@ ACTION_MOVEMENTS = {DOWN: np.array((0, 1)), LEFT: np.array((-1, 0)),
                     UP: np.array((0, -1)), RIGHT: np.array((1, 0)), STAY: np.array((0, 0))}
 
 class Agent(ABC):
-    def __init__(self, agentId: int, nSeekers: int, nPreys: int, is_prey: bool, environment, wantsToReceiveInformation = False ):
+    def __init__(self, agentId: int, nSeekers: int, nPreys: int, is_prey: bool, environment, wantsToReceiveInformation = False):
         self.agentId = agentId
         self.nSeekers = nSeekers
         self.nPreys = nPreys
