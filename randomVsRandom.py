@@ -66,13 +66,19 @@ def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[
             steps += 1
             seekersActions.clear()
             preysActions.clear()
+            
             for i in range(len(seekers)):
                 seekers[i].receive_status(observations)
-                seekersActions.append(seekers[i].action())
-
             for i in range(len(preys)):
                 preys[i].receive_status(observations)
+
+            
+            for i in range(len(seekers)):
+                seekersActions.append(seekers[i].action())
+            for i in range(len(preys)):
                 preysActions.append(preys[i].action())
+
+
             
             next_observations, reward, terminals, info = environment.step(seekersActions, preysActions)
 
