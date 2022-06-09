@@ -91,6 +91,8 @@ class NeuralNetwork:
 
         return outputs, np.argmax(outputs)
 
+    def getAction(self, inputs: np.array) -> int:
+        return self.predict(inputs)[1]
 
 class RandomInitNeuralNetwork(NeuralNetwork):
     """NeuralNetwork whose weights and bias are initialized with random values
