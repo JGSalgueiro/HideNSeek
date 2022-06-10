@@ -75,7 +75,7 @@ class NeuralNetwork:
         best action to take, should this be used for the SimplePredatorPrey game"""
 
         # Inputs format: 1d array of size n_inputs
-        inputs = self.activation(np.array(inputs))
+        # inputs = self.activation(np.array(inputs))
 
         # Must be changed to 2d array of size (n_inputs + 1, 1) to do the math
         inputs = np.concatenate((inputs, np.ones([1]))).reshape((len(inputs) + 1, 1))
