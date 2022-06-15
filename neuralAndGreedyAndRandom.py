@@ -55,16 +55,23 @@ class MyTestCase(unittest.TestCase):
 
                 # Function that runs multiple episodes for a single family of agents
                 def run_family(family_i):
-                    print("Running family ", family_i)
+                    #print("Running family ", family_i)
 
-                    def render(epi: int, step: int) -> bool:
+                    def render_when(epi: int, step: int) -> bool:
                         # return current_generation % 10 == 0 and epi % 5 == 0 and family_i == 0
                         return False
+
+                    def save_when(epi) -> bool:
+                        return current_generation % 10 == 0 and epi == 0
+
+                    def give_save_name(epi) -> str:
+                        return "neural/Family_" + str(family_i) + "_Generation_" + str(current_generation)
 
                     seeker_family = seeker_families[family_i]
 
                     # 3 - Evaluate agent
-                    results = run_multi_agent(environments[family_i], seeker_family, preys, 10, render, 0.1)
+                    results = run_multi_agent(environments[family_i], seeker_family, preys, 10, render_when, 0.1,
+                                              save_when, give_save_name)
 
                     familyFitness = fitness(results, False, n_agents)
 
@@ -77,7 +84,7 @@ class MyTestCase(unittest.TestCase):
                     for seeker in seeker_family:
                         seeker.game_ended()
 
-                    print("Concluded running family ", family_i)
+                    #print("Concluded running family ", family_i)
 
                 futures = [thread_pool.submit(run_family, i) for i in range(n_families)]
 
@@ -103,7 +110,7 @@ class MyTestCase(unittest.TestCase):
 
                         family_to_die[agent_i].neuralNetwork = newNetwork
 
-                print("---Results of best family from generation ", current_generation, "---")
+                print("---Results of best family: ", sorted_families[0][0], ", from generation ", current_generation, "---")
                 print_goodies(best_results[current_generation])
                 print("------------")
 

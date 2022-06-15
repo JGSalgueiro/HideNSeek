@@ -47,8 +47,8 @@ class SimplifiedPredatorPrey(gym.Env):
         self.prey_pos = {_: None for _ in range(self.n_preys)}
         self._prey_alive = None
 
-        self._base_grid = self.__create_grid()  # with no agents
-        self._full_obs = self.__create_grid()
+        self._base_grid = self.create_grid()  # with no agents
+        self._full_obs = self.create_grid()
         self._agent_dones = [False for _ in range(self.n_agents)]
         self._prey_move_probs = prey_move_probs
         self.viewer = None
@@ -161,12 +161,12 @@ class SimplifiedPredatorPrey(gym.Env):
     def __draw_base_img(self):
         self._base_img = draw_grid(self._grid_shape[0], self._grid_shape[1], cell_size=CELL_SIZE, fill='white')
 
-    def __create_grid(self):
+    def create_grid(self):
         _grid = [[PRE_IDS['empty'] for _ in range(self._grid_shape[1])] for row in range(self._grid_shape[0])]
         return _grid
 
     def __init_full_obs(self):
-        self._full_obs = self.__create_grid()
+        self._full_obs = self.create_grid()
 
         for agent_i in range(self.n_agents):
             while True:
@@ -175,7 +175,7 @@ class SimplifiedPredatorPrey(gym.Env):
                 if self._is_cell_vacant(pos):
                     self.agent_pos[agent_i] = pos
                     break
-            self.__update_agent_view(agent_i)
+            self.update_agent_view(agent_i)
 
         for prey_i in range(self.n_preys):
             while True:
@@ -184,7 +184,7 @@ class SimplifiedPredatorPrey(gym.Env):
                 if self._is_cell_vacant(pos) and (self._neighbour_agents(pos)[0] == 0):
                     self.prey_pos[prey_i] = pos
                     break
-            self.__update_prey_view(prey_i)
+            self.update_prey_view(prey_i)
 
         self.__draw_base_img()
 
@@ -240,7 +240,7 @@ class SimplifiedPredatorPrey(gym.Env):
         if next_pos is not None and self._is_cell_vacant(next_pos):
             self.agent_pos[agent_i] = next_pos
             self._full_obs[curr_pos[0]][curr_pos[1]] = PRE_IDS['empty']
-            self.__update_agent_view(agent_i)
+            self.update_agent_view(agent_i)
 
     def __next_pos(self, curr_pos, move):
         if move == 0:  # down
@@ -275,17 +275,17 @@ class SimplifiedPredatorPrey(gym.Env):
             if next_pos is not None and self._is_cell_vacant(next_pos):
                 self.prey_pos[prey_i] = next_pos
                 self._full_obs[curr_pos[0]][curr_pos[1]] = PRE_IDS['empty']
-                self.__update_prey_view(prey_i)
+                self.update_prey_view(prey_i)
             else:
                 # print('pos not updated')
                 pass
         else:
             self._full_obs[curr_pos[0]][curr_pos[1]] = PRE_IDS['empty']
 
-    def __update_agent_view(self, agent_i):
+    def update_agent_view(self, agent_i):
         self._full_obs[self.agent_pos[agent_i][0]][self.agent_pos[agent_i][1]] = PRE_IDS['agent'] + str(agent_i + 1)
 
-    def __update_prey_view(self, prey_i):
+    def update_prey_view(self, prey_i):
         self._full_obs[self.prey_pos[prey_i][0]][self.prey_pos[prey_i][1]] = PRE_IDS['prey'] + str(prey_i + 1)
 
     def _neighbour_agents(self, pos):

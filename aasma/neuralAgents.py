@@ -1,10 +1,8 @@
 from abc import abstractmethod
 
-import aasma.agent as agent
 import numpy as np
-import math
-from scipy.spatial.distance import cityblock
-import random
+
+import aasma.agent as agent
 import aasma.neuralNetworks as nn
 
 
