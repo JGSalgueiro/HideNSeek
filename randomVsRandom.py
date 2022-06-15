@@ -84,9 +84,9 @@ def run_multi_agent(environment: Env, seekers: Sequence[Agent], preys: Sequence[
 
             if render_when(episode, steps):
                 environment.render()
-                print(f'Epi: {episode}, Step: {steps}, Obs: {next_observations}, Reward: {reward}, Terminals: {terminals}, Info: {info}'
+                """print(f'Epi: {episode}, Step: {steps}, Obs: {next_observations}, Reward: {reward}, Terminals: {terminals}, Info: {info}'
                       f'Seeker actions: {[ACTION_MEANING[a] for a in seekersActions]}, '
-                      f'Prey actions: {[ACTION_MEANING[a] for a in preysActions]}')
+                      f'Prey actions: {[ACTION_MEANING[a] for a in preysActions]}')"""
                 sleep(seconds_per_rendered_frame)
 
             observations = next_observations

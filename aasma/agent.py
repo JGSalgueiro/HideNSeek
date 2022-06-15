@@ -91,7 +91,7 @@ class Agent(ABC):
         
         # print("isPrey: ", self.is_prey(), " agentId: ", self.agentId, "MyEnemyPositions: ", visible_enemy_positions)
         if self.wantsToShareInformation:
-            for agentId in range(self.nPreys):
+            for agentId in range(self.nPreys if self.is_prey() else self.nSeekers):
                 if agentId == self.agentId:
                     continue
                 self.calculateSharedInformation(enemy_positions, agentId, visible_enemy_positions, team_positions)
