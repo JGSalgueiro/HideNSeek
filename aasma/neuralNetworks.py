@@ -168,6 +168,7 @@ def reproduce(mother: NeuralNetwork, father: NeuralNetwork) -> NeuralNetwork:
 def sigmoid(x: np.array):
     return 1.0 / (1.0 + np.exp(-1 * x))
 
+
 def load_network(filename: str) -> NeuralNetwork:
     filename = "neuralNetworks/" + filename + ".pickle"
     if file_exists(filename):

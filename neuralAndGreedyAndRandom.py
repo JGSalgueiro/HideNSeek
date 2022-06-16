@@ -133,7 +133,7 @@ class MyTestCase(unittest.TestCase):
             current_generation = 0
             all_results = {}
             np.random.seed(625)
-            n_families = 32 # Must be a multiple of 4
+            n_families = 48 # Must be a multiple of 4
             results_lock = Lock()
             best_results = []
             mutate_chance = 0.01
