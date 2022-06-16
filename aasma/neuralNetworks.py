@@ -1,4 +1,4 @@
-import numpy as np
+import cupy as np
 import random
 
 weightMutationNoise = 2
@@ -39,7 +39,7 @@ class NeuralNetwork:
         # We might want to create specializations where the tensors are not initialized with 0s
         return np.zeros((x, y, z))
 
-    def activation(self, x: np.array):
+    def activation(self, x: np.array) -> np.array:
         # Sigmoid by default
         return sigmoid(x)
 
@@ -78,13 +78,13 @@ class NeuralNetwork:
         # inputs = self.activation(np.array(inputs))
 
         # Must be changed to 2d array of size (n_inputs + 1, 1) to do the math
-        inputs = np.concatenate((inputs, np.ones([1]))).reshape((len(inputs) + 1, 1))
+        inputs = np.concatenate((inputs, np.ones(1))).reshape((len(inputs) + 1, 1))
 
         for weight_matrix in self.weight_matrix_sequence():
             aux = self.activation(weight_matrix @ inputs)
 
             # Adding a row with a '1' due to the bias multiplication
-            inputs = np.concatenate((aux, np.ones([1, 1])), axis=0)
+            inputs = np.concatenate((aux, np.ones((1, 1))), axis=0)
 
         # Ignoring the last row because of the bias
         outputs = inputs[:-1]
@@ -162,5 +162,5 @@ def reproduce(mother: NeuralNetwork, father: NeuralNetwork) -> NeuralNetwork:
     return child
 
 
-def sigmoid(x: np.array):
+def sigmoid(x: np.array) -> np.array:
     return 1.0 / (1.0 + np.exp(-1 * x))

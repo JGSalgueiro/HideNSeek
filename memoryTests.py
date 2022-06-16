@@ -8,7 +8,7 @@ from randomVsRandom import load_info, EpisodeInfo, run_multi_agent
 
 class MyTestCase(unittest.TestCase):
     def test_MemorySeekerVsMemoryPrey(self):
-        episode_filename = "neural/Family_2_Generation_0"
+        episode_filename = "neural/Family_0_Generation_20"
         n_agents = 5
 
         # 1 - Setup environment
