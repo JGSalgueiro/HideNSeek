@@ -1,6 +1,6 @@
 import unittest
-from randomAndGreedy import MyTestCase
+from neuralAndGreedyAndRandom import MyTestCase
 
 
 if __name__ == '__main__':
-    MyTestCase.test_GreedySeekerVsGreedyPrey(unittest.TestCase);
+    MyTestCase.test_NeuralSelfishVectorSeekerVsRandomPrey_ParentReproduction(unittest.TestCase);

@@ -21,7 +21,7 @@ class MyTestCase(unittest.TestCase):
             current_generation = 0
             all_results = {}
             np.random.seed(625)
-            n_families = 32 # Must be a multiple of 2
+            n_families = 56 # Must be a multiple of 2
             results_lock = Lock()
             best_results = []
             mutate_chance = 0.01
