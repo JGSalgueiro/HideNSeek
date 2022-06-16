@@ -283,7 +283,7 @@ class MyTestCase(unittest.TestCase):
 
                 # Function that runs multiple episodes for a single family of agents
                 def run_family(family_i):
-                    print("Running family ", family_i)
+                    #print("Running family ", family_i)
 
                     def render_when(epi: int, step: int) -> bool:
                         # return current_generation % 10 == 0 and epi == 0 and family_i == 0
@@ -312,7 +312,7 @@ class MyTestCase(unittest.TestCase):
                     for seeker in seeker_family:
                         seeker.game_ended()
 
-                    print("Concluded running family ", family_i)
+                    #print("Concluded running family ", family_i)
 
                 futures = [thread_pool.submit(run_family, i) for i in range(n_families)]
 
