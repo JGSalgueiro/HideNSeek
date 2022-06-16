@@ -11,16 +11,17 @@ from randomVsRandom import run_multi_agent
 from aasma import NeuralDecentralizedVectorAgent, clone, reproduce
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
+from aasma.neuralNetworks import save_info
 
 class MyTestCase(unittest.TestCase):
     def test_NeuralSelfishVectorSeekerVsRandomPrey(self):
         with ThreadPoolExecutor(os.cpu_count()) as thread_pool:
             n_agents = 5
-            n_max_generations = 100
+            n_max_generations = 400
             current_generation = 0
             all_results = {}
             np.random.seed(625)
-            n_families = 24
+            n_families = 32
             results_lock = Lock()
             best_results = []
             mutate_chance = 0.01
@@ -97,7 +98,14 @@ class MyTestCase(unittest.TestCase):
                 # Ordering the families by fitness
                 sorted_families = sorted([(fam, fit) for fam, fit in family_fitness.items()], key=lambda x: x[1],
                                          reverse=True)
-                best_results.append(all_results[(current_generation, sorted_families[0][0])])
+                best_family_i = sorted_families[0][0]
+                best_results.append(all_results[(current_generation, best_family_i)])
+
+                # Saving the best neural network of each generation
+                for agent_id in range(n_agents):
+                    save_info(seeker_families[best_family_i][agent_id].neuralNetwork,
+                              "Generation_" + str(current_generation) + "_Family_" + str(best_family_i) +
+                              "_Seeker_" + str(agent_id))
 
                 # Killing off the half worst and replacing with slightly mutated clones from the half best
                 for i in range(family_threshold):

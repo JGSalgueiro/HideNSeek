@@ -1,5 +1,8 @@
 import numpy as np
 import random
+import pickle
+import os
+from os.path import exists as file_exists
 
 weightMutationNoise = 2
 percentageWeightsMutated = 0.01
@@ -164,3 +167,21 @@ def reproduce(mother: NeuralNetwork, father: NeuralNetwork) -> NeuralNetwork:
 
 def sigmoid(x: np.array):
     return 1.0 / (1.0 + np.exp(-1 * x))
+
+def load_network(filename: str) -> NeuralNetwork:
+    filename = "neuralNetworks/" + filename + ".pickle"
+    if file_exists(filename):
+        file = open(filename, 'rb')
+        content = pickle.load(file)
+        file.close()
+
+        return content
+    else:
+        raise FileNotFoundError(filename)
+
+
+def save_info(info: NeuralNetwork, filename: str):
+    os.makedirs("neuralNetworks/", exist_ok=True)
+    file = open("neuralNetworks/" + filename + ".pickle", 'wb')
+    pickle.dump(info, file)
+    file.close()
