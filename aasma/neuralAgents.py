@@ -249,7 +249,7 @@ class NeuralCentralizedVectorAgent(NeuralAgent):
         n_inputs = self.n_inputs
 
         # No specific reason for this value
-        n_hidden_layers = 2
+        n_hidden_layers = 1
 
         # No specific reason for this value
         n_hidden_layer_size = 16
