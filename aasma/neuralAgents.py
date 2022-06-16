@@ -116,7 +116,7 @@ class NeuralDecentralizedVectorAgent(NeuralAgent):
         n_inputs = self.n_inputs
 
         # No specific reason for this value
-        n_hidden_layers = 3
+        n_hidden_layers = 1
 
         # Hopefully having double as many hidden neurons as input neurons will
         # make the agent recognize when preys are dead

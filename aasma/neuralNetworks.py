@@ -126,8 +126,11 @@ def clone(original: NeuralNetwork) -> NeuralNetwork:
     copy = getEmptyNetwork()
 
     copy.input_weights = np.copy(original.input_weights)
-    copy.hidden_layers_weights = np.copy(original.hidden_layers_weights)
-    copy.output_weights = np.copy(original.output_weights)
+
+    if original.hidden_layers_weights is not None:
+        copy.hidden_layers_weights = np.copy(original.hidden_layers_weights)
+    if original.output_weights is not None:
+        copy.output_weights = np.copy(original.output_weights)
 
     return copy
 
