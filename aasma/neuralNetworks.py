@@ -181,7 +181,7 @@ def load_network(filename: str) -> NeuralNetwork:
         raise FileNotFoundError(filename)
 
 
-def save_info(info: NeuralNetwork, filename: str):
+def save_network(info: NeuralNetwork, filename: str):
     os.makedirs("neuralNetworks/", exist_ok=True)
     file = open("neuralNetworks/" + filename + ".pickle", 'wb')
     pickle.dump(info, file)

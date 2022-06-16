@@ -11,7 +11,7 @@ from randomVsRandom import run_multi_agent
 from aasma import NeuralDecentralizedVectorAgent, clone, reproduce, NeuralCentralizedVectorAgent
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
-from aasma.neuralNetworks import save_info
+from aasma.neuralNetworks import save_network
 
 class MyTestCase(unittest.TestCase):
     def test_NeuralSelfishVectorSeekerVsRandomPrey_CloneReproduction(self):
@@ -103,7 +103,7 @@ class MyTestCase(unittest.TestCase):
 
                 # Saving the best neural network of each generation
                 for agent_id in range(n_agents):
-                    save_info(seeker_families[best_family_i][agent_id].neuralNetwork,
+                    save_network(seeker_families[best_family_i][agent_id].neuralNetwork,
                               "Generation_" + str(current_generation) + "_Family_" + str(best_family_i) +
                               "_Seeker_" + str(agent_id))
 
@@ -215,7 +215,7 @@ class MyTestCase(unittest.TestCase):
 
                 # Saving the best neural network of each generation
                 for agent_id in range(n_agents):
-                    save_info(seeker_families[best_family_i][agent_id].neuralNetwork,
+                    save_network(seeker_families[best_family_i][agent_id].neuralNetwork,
                               "Generation_" + str(current_generation) + "_Family_" + str(best_family_i) +
                               "_Seeker_" + str(agent_id))
 
@@ -293,7 +293,7 @@ class MyTestCase(unittest.TestCase):
                         return current_generation % 10 == 0 and epi == 0
 
                     def give_save_name(epi) -> str:
-                        return "neural/Family_" + str(family_i) + "_Generation_" + str(current_generation)
+                        return "neuralCentralized/Family_" + str(family_i) + "_Generation_" + str(current_generation)
 
                     seeker_family = seeker_families[family_i]
 
@@ -330,7 +330,7 @@ class MyTestCase(unittest.TestCase):
 
                 # Saving the best neural network of each generation
                 for agent_id in range(n_agents):
-                    save_info(seeker_families[best_family_i][agent_id].neuralNetwork,
+                    save_network(seeker_families[best_family_i][agent_id].neuralNetwork,
                               "Generation_" + str(current_generation) + "_Family_" + str(best_family_i) +
                               "_Seeker_" + str(agent_id))
 
