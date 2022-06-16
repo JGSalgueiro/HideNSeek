@@ -153,47 +153,47 @@ class NeuralCentralizedVectorAgent(NeuralAgent):
 
         self.family_id = family_id
 
-        self.family_visible_enemy_positions_history.setdefault(family_id, [])
-        self.family_team_positions_history.setdefault(family_id, [])
-        self.family_members.setdefault(family_id, [])
-        self.last_step_inputs.setdefault(family_id, -1)
-        self.last_step_prediction.setdefault(family_id, -1)
+        NeuralCentralizedVectorAgent.family_visible_enemy_positions_history.setdefault(family_id, [])
+        NeuralCentralizedVectorAgent.family_team_positions_history.setdefault(family_id, [])
+        NeuralCentralizedVectorAgent.family_members.setdefault(family_id, [])
+        NeuralCentralizedVectorAgent.last_step_inputs.setdefault(family_id, -1)
+        NeuralCentralizedVectorAgent.last_step_prediction.setdefault(family_id, -1)
 
         # Each input neuron will receive either the x or y value of a teammate or an enemy
         # There will be inputs for memorizing the last 2 states, hence the "* self.history_length"
         self.n_inputs = (nSeekers + nPreys) * 2 * self.history_length
 
-        if family_id not in self.family_network:
+        if family_id not in NeuralCentralizedVectorAgent.family_network:
             if neuralNetwork is None:
                 neuralNetwork = self.get_emtpy_network()
-                self.family_network[family_id] = self.get_emtpy_network()
+                NeuralCentralizedVectorAgent.family_network[family_id] = self.get_emtpy_network()
             else:
-                self.family_network[family_id] = neuralNetwork
+                NeuralCentralizedVectorAgent.family_network[family_id] = neuralNetwork
         else:
             # Setting this variable so the super constructor doesn't create a new network
-            neuralNetwork = self.family_network[family_id]
+            neuralNetwork = NeuralCentralizedVectorAgent.family_network[family_id]
 
-        self.family_members[family_id].append(agentId)
+        NeuralCentralizedVectorAgent.family_members[family_id].append(agentId)
 
         super().__init__(agentId, nSeekers, nPreys, is_prey, environment,
                          neuralNetwork, wantsToReceiveInformation)
 
     def get_my_network(self) -> nn.NeuralNetwork:
-        return self.family_network[self.family_id]
+        return NeuralCentralizedVectorAgent.family_network[self.family_id]
 
     def set_my_network(self, network: nn.NeuralNetwork):
-        self.family_network[self.family_id] = network
+        NeuralCentralizedVectorAgent.family_network[self.family_id] = network
 
     def turn_observation_into_neural_inputs(self) -> np.ndarray:
         current_step = self.environment._step_count
 
-        if current_step > self.last_step_inputs[self.family_id]:
+        if current_step > NeuralCentralizedVectorAgent.last_step_inputs[self.family_id]:
             # This is the first agent turning the observations into neural inputs
         
-            self.last_step_inputs[self.family_id] += 1
+            NeuralCentralizedVectorAgent.last_step_inputs[self.family_id] += 1
 
-            visible_enemy_positions_history = self.family_visible_enemy_positions_history[self.family_id]
-            team_positions_history = self.family_team_positions_history[self.family_id]
+            visible_enemy_positions_history = NeuralCentralizedVectorAgent.family_visible_enemy_positions_history[self.family_id]
+            team_positions_history = NeuralCentralizedVectorAgent.family_team_positions_history[self.family_id]
 
             visible_enemy_positions_history.append(self.visible_enemy_positions)
             team_positions_history.append(self.team_positions)
@@ -232,16 +232,16 @@ class NeuralCentralizedVectorAgent(NeuralAgent):
                         inputs[enemy_pos_offset + agentId * 2] = visible_enemy_pos[agentId * 2]
                         inputs[enemy_pos_offset + agentId * 2 + 1] = visible_enemy_pos[agentId * 2 + 1]
 
-            self.calculated_inputs[self.family_id] = inputs
+            NeuralCentralizedVectorAgent.calculated_inputs[self.family_id] = inputs
 
-        return self.calculated_inputs[self.family_id]
+        return NeuralCentralizedVectorAgent.calculated_inputs[self.family_id]
 
     def game_ended(self):
         # Resetting the history
-        self.family_visible_enemy_positions_history[self.family_id].clear()
-        self.family_team_positions_history[self.family_id].clear()
-        self.last_step_inputs[self.family_id] = -1
-        self.last_step_prediction[self.family_id] = -1
+        NeuralCentralizedVectorAgent.family_visible_enemy_positions_history[self.family_id].clear()
+        NeuralCentralizedVectorAgent.family_team_positions_history[self.family_id].clear()
+        NeuralCentralizedVectorAgent.last_step_inputs[self.family_id] = -1
+        NeuralCentralizedVectorAgent.last_step_prediction[self.family_id] = -1
 
     def get_network_init_args(self) -> tuple[int, int, int, int]:
         # Each input neuron will receive either the x or y value of a teammate or an enemy
@@ -262,13 +262,13 @@ class NeuralCentralizedVectorAgent(NeuralAgent):
     def action(self) -> int:
         current_step = self.environment._step_count
 
-        if current_step > self.last_step_prediction[self.family_id]:
+        if current_step > NeuralCentralizedVectorAgent.last_step_prediction[self.family_id]:
             # This is the first agent generating an action
-            self.last_step_prediction[self.family_id] += 1
-            self.calculated_prediction[self.family_id] = \
+            NeuralCentralizedVectorAgent.last_step_prediction[self.family_id] += 1
+            NeuralCentralizedVectorAgent.calculated_prediction[self.family_id] = \
                 self.get_my_network().getAction(self.turn_observation_into_neural_inputs())
 
-        prediction = self.calculated_prediction[self.family_id]
+        prediction = NeuralCentralizedVectorAgent.calculated_prediction[self.family_id]
 
         # This prediction value corresponds to the index of the collective action
         # Ex: nAgents = 5, nActions = 5
