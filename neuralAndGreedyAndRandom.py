@@ -253,7 +253,7 @@ class MyTestCase(unittest.TestCase):
             current_generation = 0
             all_results = {}
             np.random.seed(625)
-            n_families = 48 # Must be a multiple of 2
+            n_families = 36 # Must be a multiple of 2
             results_lock = Lock()
             best_results = []
             mutate_chance = 0.01
@@ -335,10 +335,9 @@ class MyTestCase(unittest.TestCase):
                 best_results.append(all_results[(current_generation, best_family_i)])
 
                 # Saving the best neural network of each generation
-                for agent_id in range(n_agents):
-                    save_network(seeker_families[best_family_i][agent_id].neuralNetwork,
-                              "Generation_" + str(current_generation) + "_Family_" + str(best_family_i) +
-                              "_Seeker_" + str(agent_id))
+                save_network(seeker_families[best_family_i][0].get_my_network(),
+                          "Centralized_Generation_" + str(current_generation) + "_Family_" + str(best_family_i) +
+                          "_Seeker")
 
                 # Killing off the half worst and replacing with slightly mutated clones from the half best
                 for i in range(family_threshold):

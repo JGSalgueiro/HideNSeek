@@ -10,7 +10,7 @@ from aasma.neuralNetworks import load_network
 class MyTestCase(unittest.TestCase):
     def test_NeuralSeekerVsRandomPrey(self):
         n_agents = 5
-        filenames = "Generation_312_Family_29_Seeker_"
+        filenames = "Generation_10_Family_27_Seeker_"
 
         # 1 - Setup environment
         environment = SimplifiedPredatorPrey(
