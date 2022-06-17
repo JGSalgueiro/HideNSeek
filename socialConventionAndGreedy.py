@@ -85,6 +85,63 @@ class MyTestCase(unittest.TestCase):
 
         # 3 - Evaluate agent
         print_goodies(run_multi_agent(environment, seekers, preys, 500, lambda epi, step: False, 0.1))
+    
+    def test_RandomSeekerVsSocialConventionPrey_ManyEpisodes(self):
+        n_agents = 5
+
+        # 1 - Setup environment
+        environment = SimplifiedPredatorPrey(
+            grid_shape=(20, 20),
+            n_agents=5, n_preys=5,
+            max_steps=100, required_captors=1
+        )
+
+        # 2 - Setup agent
+        seekers = [Agent(i, environment.n_agents, environment.n_preys, False, environment) for i in
+                   range(n_agents)]
+        preys = [SocialConventionAgent(i, environment.n_agents, environment.n_preys, True,
+                                       environment) for i in range(n_agents)]
+
+        # 3 - Evaluate agent
+        print_goodies(run_multi_agent(environment, seekers, preys, 500, lambda epi, step: False, 0.1))
+    
+    def test_SocialSeekerVsRandomPrey_ManyEpisodes(self):
+        n_agents = 5
+
+        # 1 - Setup environment
+        environment = SimplifiedPredatorPrey(
+            grid_shape=(20, 20),
+            n_agents=5, n_preys=5,
+            max_steps=100, required_captors=1
+        )
+
+        # 2 - Setup agent
+        seekers = [SocialConventionAgent(i, environment.n_agents, environment.n_preys, False,
+                                environment) for i in range(n_agents)]
+        preys = [Agent(i, environment.n_agents, environment.n_preys, True, environment) for i in
+                   range(n_agents)]
+
+        # 3 - Evaluate agent
+        print_goodies(run_multi_agent(environment, seekers, preys, 500, lambda epi, step: False, 0.1))
+
+    def test_SocialSeekerVsSocialPrey_ManyEpisodes(self):
+        n_agents = 5
+
+        # 1 - Setup environment
+        environment = SimplifiedPredatorPrey(
+            grid_shape=(20, 20),
+            n_agents=5, n_preys=5,
+            max_steps=100, required_captors=1
+        )
+
+        # 2 - Setup agent
+        seekers = [SocialConventionAgent(i, environment.n_agents, environment.n_preys, False,
+                                environment) for i in range(n_agents)]
+        preys = [SocialConventionAgent(i, environment.n_agents, environment.n_preys, True, environment) for i in
+                   range(n_agents)]
+
+        # 3 - Evaluate agent
+        print_goodies(run_multi_agent(environment, seekers, preys, 500, lambda epi, step: False, 0.1))
 
 if __name__ == '__main__':
     unittest.main()

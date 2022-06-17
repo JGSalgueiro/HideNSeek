@@ -11,7 +11,7 @@ from randomVsRandom import run_multi_agent
 from aasma import NeuralDecentralizedVectorAgent, clone, reproduce, NeuralCentralizedVectorAgent
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
-from aasma.neuralNetworks import save_network
+from aasma.neuralNetworks import load_network, save_info, save_network
 
 class MyTestCase(unittest.TestCase):
     def test_NeuralSelfishVectorSeekerVsRandomPrey_CloneReproduction(self):
@@ -137,6 +137,7 @@ class MyTestCase(unittest.TestCase):
             results_lock = Lock()
             best_results = []
             mutate_chance = 0.01
+            filenames = "Generation_312_Family_29_Seeker_"
 
             family_threshold = n_families // 2
 
@@ -153,10 +154,15 @@ class MyTestCase(unittest.TestCase):
             ]
 
             environment = environments[0]
+            networks = []
+
+            for i in range(n_agents):
+                filename = filenames + str(i)
+                networks.append(load_network(filename))
 
             # 2 - Setup agent
             seeker_families = [
-                [NeuralDecentralizedVectorAgent(i, environment.n_agents, environment.n_preys, False, environment)
+                [NeuralDecentralizedVectorAgent(i, environment.n_agents, environment.n_preys, False, environment, neuralNetwork=networks[i])
                  for i in
                  range(n_agents)] for _ in range(n_families)]
             preys = [Agent(i, environment.n_agents, environment.n_preys, True, environment) for i in

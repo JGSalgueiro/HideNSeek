@@ -80,6 +80,24 @@ class MyTestCase(unittest.TestCase):
         # 3 - Evaluate agent
         print_goodies(run_multi_agent(environment, seekers, preys, 500, lambda epi, step: False, 0))
 
+    def test_GreedySeekerVsGreedyPrey_ManyEpisodes(self):
+        n_agents = 5
+
+        # 1 - Setup environment
+        environment = SimplifiedPredatorPrey(
+            grid_shape=(20, 20),
+            n_agents=5, n_preys=5,
+            max_steps=100, required_captors=1
+        )
+
+        # 2 - Setup agent
+        seekers = [GreedyAgent(i, environment.n_agents, environment.n_preys, False, environment) for i in
+                   range(n_agents)]
+        preys = [GreedyAgent(i, environment.n_agents, environment.n_preys, True, environment) for i in range(n_agents)]
+
+        # 3 - Evaluate agent
+        print_goodies(run_multi_agent(environment, seekers, preys, 500, lambda epi, step: False, 0))
+
     def test_RandomSeekerVsGreedyPrey_ManyEpisodes(self):
         n_agents = 5
 
@@ -97,7 +115,7 @@ class MyTestCase(unittest.TestCase):
         # 3 - Evaluate agent
         print_goodies(run_multi_agent(environment, seekers, preys, 500, lambda epi, step: False, 0))
 
-    def test_GreedySeekerVsGreedyPrey_ManyEpisodes(self):
+    def test_RandomSeekerVsRandomPrey_ManyEpisodes(self):
         n_agents = 5
 
         # 1 - Setup environment
@@ -108,11 +126,12 @@ class MyTestCase(unittest.TestCase):
         )
 
         # 2 - Setup agent
-        seekers = [GreedyAgent(i, environment.n_agents, environment.n_preys, False, environment) for i in range(n_agents)]
-        preys = [GreedyAgent(i, environment.n_agents, environment.n_preys, True, environment) for i in range(n_agents)]
+        seekers = [Agent(i, environment.n_agents, environment.n_preys, False, environment) for i in range(n_agents)]
+        preys = [Agent(i, environment.n_agents, environment.n_preys, True, environment) for i in range(n_agents)]
 
         # 3 - Evaluate agent
         print_goodies(run_multi_agent(environment, seekers, preys, 500, lambda epi, step: False, 0))
+    
 
 def print_goodies(results: tuple[np.ndarray, np.ndarray]):
     nRounds, nPreysAlive = results
