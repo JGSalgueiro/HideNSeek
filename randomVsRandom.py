@@ -212,26 +212,22 @@ def save_info(info: EpisodeInfo, filename: str):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--episodes", type=int, default=30)
+    parser.add_argument("--episodes", type=int, default=500)
     opt = parser.parse_args()
 
     # 1 - Setup environment
     environment = SimplifiedPredatorPrey(
         grid_shape=(20, 20),
-        n_agents=3, n_preys=3,
+        n_agents=5, n_preys=5,
         max_steps=100, required_captors=1
     )
 
     # 2 - Setup agent
-    agents = [Agent(0, environment.n_agents, environment.n_preys, False, environment),
-              Agent(1, environment.n_agents, environment.n_preys, False, environment),
-              Agent(2, environment.n_agents, environment.n_preys, False, environment)]
-    preys = [Agent(0, environment.n_agents, environment.n_preys, True, environment),
-             Agent(1, environment.n_agents, environment.n_preys, True, environment),
-             Agent(2, environment.n_agents, environment.n_preys, True, environment)]
+    seekers = [Agent(i, environment.n_agents, environment.n_preys, False, environment) for i in range(5)]
+    preys = [Agent(i, environment.n_agents, environment.n_preys, True, environment) for i in range(5)]
 
     # 3 - Evaluate agent
-    results = run_multi_agent(environment, agents, preys, opt.episodes)
+    results = run_multi_agent(environment, seekers, preys, opt.episodes)
 
     # 4 - Compare results
     # compare_results(results, title="Random Agent on 'Predator Prey' Environment", colors=["orange"])

@@ -11,7 +11,7 @@ from randomVsRandom import run_multi_agent
 from aasma import NeuralDecentralizedVectorAgent, clone, reproduce, NeuralCentralizedVectorAgent
 from threading import Lock
 from concurrent.futures import ThreadPoolExecutor
-from aasma.neuralNetworks import load_network, save_info
+from aasma.neuralNetworks import load_network, save_info, save_network
 
 class MyTestCase(unittest.TestCase):
     def test_NeuralSelfishVectorSeekerVsRandomPrey_CloneReproduction(self):
