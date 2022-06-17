@@ -204,6 +204,7 @@ def load_info(filename: str) -> EpisodeInfo:
 def save_info(info: EpisodeInfo, filename: str):
     os.makedirs("savedEpisodes/neural", exist_ok=True)
     os.makedirs("savedEpisodes/neuralCentralized", exist_ok=True)
+    os.makedirs("savedEpisodes/neuralCentralizedVsGreedy", exist_ok=True)
     file = open("savedEpisodes/" + filename + ".pickle", 'wb')
     pickle.dump(info, file)
     file.close()
