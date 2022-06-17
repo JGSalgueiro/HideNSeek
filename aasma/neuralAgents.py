@@ -38,7 +38,7 @@ class NeuralAgent(agent.Agent):
     def get_emtpy_network(self):
         n_inputs, n_hidden_layers, n_hidden_layer_size, n_outputs = self.get_network_init_args()
 
-        return nn.NeuralNetwork(n_inputs, n_hidden_layers, n_hidden_layer_size, n_outputs)
+        return nn.RandomInitNeuralNetwork(n_inputs, n_hidden_layers, n_hidden_layer_size, n_outputs)
 
     def game_ended(self):
         pass

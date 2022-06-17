@@ -105,18 +105,12 @@ class RandomInitNeuralNetwork(NeuralNetwork):
 
         aux = array * 2 - np.ones((n_rows, n_columns))
 
-        # Making all biases 0
-        aux[:, -1] = 0
-
         return aux
 
     def initialize_tensor(self, x: int, y: int, z: int):
         array = np.random.rand(x, y, z)
 
         aux = array * 2 - np.ones((x, y, z))
-
-        # Making all biases 0
-        aux[:, :, -1] = 0
 
         return aux
 

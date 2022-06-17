@@ -62,7 +62,7 @@ class MyTestCase(unittest.TestCase):
 
     def test_CentralizedNeuralSeekerVsRandomPrey(self):
         n_agents = 5
-        filename = "Centralized_Generation_100_Family_4_Seeker"
+        filename = "Centralized_Generation_400_Family_14_Seeker_Vs_Greedy_Prey"
 
         # 1 - Setup environment
         environment = SimplifiedPredatorPrey(

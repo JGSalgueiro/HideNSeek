@@ -358,7 +358,7 @@ class MyTestCase(unittest.TestCase):
             current_generation = 0
             all_results = {}
             np.random.seed(625)
-            n_families = 32 # Must be a multiple of 2
+            n_families = 48 # Must be a multiple of 2
             results_lock = Lock()
             best_results = []
             mutate_chance = 0.05
@@ -409,7 +409,7 @@ class MyTestCase(unittest.TestCase):
                     seeker_family = seeker_families[family_i]
 
                     # 3 - Evaluate agent
-                    results = run_multi_agent(environments[family_i], seeker_family, preys, 10, render_when, 0.1,
+                    results = run_multi_agent(environments[family_i], seeker_family, preys, 5, render_when, 0.1,
                                               save_when, give_save_name)
 
                     familyFitness = fitness(results, False, n_agents)
