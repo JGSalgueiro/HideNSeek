@@ -18,5 +18,8 @@ David will create the virtual environment. João will create the rules
 for the environment and the agents, and Rafael will apply learning
 algorithms to the agents.
 
+- You can run episodes with different kinds of agents by going into the "randomVsRandom", "randomAndGreedy",
+"socialConventionAndGreedy", "neuralAndGreedyAndRandom" files and running the tests
+
 
 AASMA 2022 Project
